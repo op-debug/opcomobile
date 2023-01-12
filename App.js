@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import Navigation from "./src/navigation";
+import * as ScreenOrientation from 'expo-screen-orientation'
+import * as Device from 'expo-device';
 
 export default function App() {
+
+
+  global.TYPE_DEVICE = 1
+
+  useEffect(() => {
+    Device.getDeviceTypeAsync().then((deviceType) => {
+      global.TYPE_DEVICE = deviceType;
+      if(deviceType==2){
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE)
+      }
+      else {
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+      }
+    }); 
+  }, []);
+
+  
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <Navigation />
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
