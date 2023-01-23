@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     View,
-    Text, 
+    Text,
     StyleSheet,
     TextInput,
     TouchableOpacity,
     ScrollView,
     Dimensions,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-
+import { server } from '../../constants/init';
+import * as api from '../../services/api';
+import { UserContext } from '../../context/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -21,11 +25,32 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [visiblePassword, setVisiblePassword] = useState(true);
     const navigation = useNavigation();
+    const {dispatch} = useContext(UserContext);
 
     const visible = () => {
         setVisiblePassword(!visiblePassword);
     };
 
+    const onLogin = async () => {
+        const url = `${server.url}/auth/login`;
+        if (email == "") {
+            Alert.alert("Error", "Isi email terlebih dahulu")
+        }
+        else if (password == "") {
+            Alert.alert("Error", "Isi password terlebih dahulu")
+        }
+        else {
+            try {
+                const sendReq = await api.POST(url,'' ,{ ...{ username: email, password: password } });
+                let dataUser = { sendReq, isLoggedIn: true };
+                AsyncStorage.setItem('dataLogin', JSON.stringify(dataUser));
+                dispatch({ type: 'USER_LOGIN', login: dataUser });
+            }
+            catch (e) {
+                Alert.alert("Error", "Gagal Login Email / Password salah");
+            }
+        }
+    };
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} showsVerticalScrollIndicator={false}>
@@ -61,7 +86,7 @@ const Login = () => {
                     </View>
                     <TouchableOpacity
                         style={styles.loginBtn}
-                        onPress={() => navigation.navigate('Home')}>
+                        onPress={onLogin}>
                         <Text style={styles.loginText}>LOGIN</Text>
                     </TouchableOpacity>
                     <View>

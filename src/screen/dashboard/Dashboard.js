@@ -7,11 +7,24 @@ import {
 import Chart from './component/chart'
 import ListPiutang from './component/listPiutang'
 import IconMenu from '../../component/IconMenu';
+import LogoutMenu from '../../component/LogoutMenu';
+
 
 const Dashboard = () => {
     return (
         <View style={{ flex: 1 }}>
-            <IconMenu />
+            <View style={{ 
+                flexDirection: 'row', 
+                marginBottom:10 }}>
+                <IconMenu />
+                <Text style={{ 
+                    width: '75%',
+                    marginLeft: 10,
+                    marginTop: 32,
+                    fontSize: 20,
+                    fontWeight: 'bold' }}>Dashboard</Text>
+                <LogoutMenu/>
+            </View>
             <View style={styles.chart}>
                 <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Grafik Penjualan 1 Minggu</Text>
                 <Chart />
@@ -28,7 +41,7 @@ const styles = StyleSheet.create({
     chart: {
         flex: 1,
         alignItems: 'center',
-        marginBottom:10
+        marginBottom: 10
     },
     piutang: {
         alignItems: 'center',

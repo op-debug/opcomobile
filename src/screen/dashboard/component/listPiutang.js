@@ -87,7 +87,7 @@ const ListPiutang = () => {
         />
     )
 }
-// console.log(width)
+
 const styles = StyleSheet.create({
     listPiutang: {
         flexDirection: 'row',

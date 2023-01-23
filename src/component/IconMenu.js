@@ -13,7 +13,7 @@ const IconMenu = () => {
         >
             <Icon
                 name={'menu'}
-                size={50}
+                size={30}
                 color={'#000'}
                 style={styles.menu}
             />

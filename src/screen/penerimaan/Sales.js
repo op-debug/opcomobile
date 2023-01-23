@@ -9,10 +9,23 @@ import IconMenu from "../../component/IconMenu"
 import Categori from "./component/Category"
 import ListProduct from "./component/ListProduct"
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useState } from "react";
 
+const data = [
+    { label: 'Item 1', value: '1' },
+    { label: 'Item 2', value: '2' },
+    { label: 'Item 3', value: '3' },
+    { label: 'Item 4', value: '4' },
+    { label: 'Item 5', value: '5' },
+    { label: 'Item 6', value: '6' },
+    { label: 'Item 7', value: '7' },
+    { label: 'Item 8', value: '8' },
+];
 
 const Sales = () => {
-
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
     return (
         <View style={{ flex: 1 }}>
             <View style={{ flexDirection: 'row' }}>
@@ -20,7 +33,7 @@ const Sales = () => {
 
                 <View style={styles.inputViewSearch} >
                     <TextInput style={styles.TextInput}
-                        placeholder="Cari Barang...."
+                        placeholder="Cari...."
                         placeholderTextColor="#000000" />
                 </View>
                 <View style={styles.basketView}>
@@ -50,6 +63,32 @@ const Sales = () => {
                 </View>
             </View>
             <View>
+                <View style={styles.inputView}>
+                    <Dropdown
+                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={data}
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder={!isFocus ? 'Pilih Pelanggan' : '...'}
+                        searchPlaceholder="Cari Pelanggan..."
+                        value={value}
+                        onFocus={() => setIsFocus(true)}
+                        onBlur={() => setIsFocus(false)}
+                        onChange={item => {
+                            setValue(item.value);
+                            setIsFocus(false);
+                        }}
+
+                    />
+                </View>
+            </View>
+            <View>
                 <Categori />
                 <ListProduct />
             </View>
@@ -59,6 +98,7 @@ const Sales = () => {
 
 const styles = StyleSheet.create({
     TextInput: {
+        height: 30,
         flex: 1,
         padding: 10,
         marginLeft: 20,
@@ -74,12 +114,12 @@ const styles = StyleSheet.create({
         width: '65%',
         height: 40,
         marginLeft: 15,
-        marginTop: 30,
+        marginTop: 40,
         borderWidth: 0.5,
         borderColor: '#000000',
     },
     basketView: {
-        marginTop: 25,
+        marginTop: 35,
         marginLeft: 10
     },
     dropdown: {
